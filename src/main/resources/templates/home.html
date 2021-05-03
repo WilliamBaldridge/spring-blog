@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+    <th:block th:replace="partials/head :: head('Home')" />
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar" />
 
 <h1>This is the home page</h1>
 
