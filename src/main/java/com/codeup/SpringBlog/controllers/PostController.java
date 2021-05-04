@@ -24,28 +24,17 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
-    public String postsIndex(Model vModel) {
+    @ResponseBody
+    public List<Post> postsIndex() {
 
-        List<Post> postList = new ArrayList<>(Arrays.asList(
-                new Post("Test One", "This is the first test blog post"),
-                new Post("Test Two", "This is the second test blog post"),
-                new Post("Test Three", "This is the third test blog post")
-        ));
-
-        vModel.addAttribute("posts", postList);
-
-        return "posts/index";
+        return postDao.findAll();
     }
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
-    public String postById(@PathVariable int id, Model vModel) {
+    @ResponseBody
+    public Post postById(@PathVariable int id) {
 
-        Post post = new Post("Test One", "This is the first test blog post");
-
-        vModel.addAttribute("id", id);
-        vModel.addAttribute("post", post);
-
-        return "posts/show";
+        return postService.getPostById(id);
     }
 
     @GetMapping(path = "/posts/create")
@@ -55,14 +44,24 @@ public class PostController {
     }
 
     @PostMapping(path = "/posts/create")
-    public String createPost() {
+    public String createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, Model vModel) {
         // input add service method
 
-        Post post = new Post();
+
+        Post post = new Post(
+                title,
+                body
+        );
 
         postService.addPost(post);
 
         return "posts/index";
+    }
+
+    @GetMapping(path = "/posts/edit")
+    public String viewEditForm() {
+
+        return "posts/edit";
     }
 
 //    @PostMapping(path = "/posts")
