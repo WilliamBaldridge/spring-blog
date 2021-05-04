@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="partials/head :: head('Delete Post')"/>
+</head>
+<body>
+
+<nav th:replace="partials/navbar :: navbar"/>
+
+<div class="container mt-4" style="background-color: azure; height: 90vh">
+  <div class="row justify-content-center align-items-center" style="height: 90vh">
+      <form class="col-8" action="/posts/delete" method="post">
+        <div class="form-group">
+          <label for="delete">Delete Post by Id:</label>
+          <input id="delete" name="delete" class="form-control" type="text" required>
+        </div>
+        <input type="submit" class="btn btn-block btn-danger" value="Delete">
+      </form>
+    </form>
+  </div>
+</div>
+
+
+<th:block th:replace="partials/scripts :: scripts"/>
+</body>
+</html>

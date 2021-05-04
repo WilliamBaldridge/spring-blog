@@ -24,17 +24,19 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Post> postsIndex() {
+    public String postsIndex(Model vModel) {
 
-        return postDao.findAll();
+        vModel.addAttribute("posts", postDao.findAll());
+
+        return "posts/index";
     }
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Post postById(@PathVariable int id) {
+    public String  postById(@PathVariable int id, Model vModel) {
 
-        return postService.getPostById(id);
+        vModel.addAttribute("post", postService.getPostById(id));
+
+        return "posts/show";
     }
 
     @GetMapping(path = "/posts/create")
@@ -58,17 +60,55 @@ public class PostController {
         return "posts/index";
     }
 
-    @GetMapping(path = "/posts/edit")
-    public String viewEditForm() {
+    @GetMapping(path = "/posts/{id}/edit")
+    public String viewEditForm(@PathVariable long id, Model vModel) {
+
+        vModel.addAttribute("post", postService.getPostById(id));
 
         return "posts/edit";
     }
 
-//    @PostMapping(path = "/posts")
-//    public Post updatePost() {
+//    @PostMapping(path = "/posts/edit")
+//    public String editPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, Model vModel) {
 //
+//        Post updatedPost = new Post(
+//                1001,
+//                title,
+//                body
+//        );
 //
+//        postService.updatePost(updatedPost);
+//
+//        return "posts/index";
 //    }
+
+    @PostMapping(path = "/posts/edit/{id}")
+    public String  editPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, @PathVariable long id, Model vModel) {
+
+        Post updatedPost = new Post(
+                id,
+                title,
+                body
+        );
+
+        postService.updatePost(updatedPost);
+
+        return "posts/index";
+    }
+
+//    @GetMapping(path = "/posts/delete")
+//    public String viewDeleteForm() {
+//
+//        return "posts/delete";
+//    }
+
+    @PostMapping(path = "/posts/{id}/delete")
+    public String deletePost(@PathVariable long id) {
+
+        postDao.deleteById(id);
+
+        return "posts/index";
+    }
 
 
 }
