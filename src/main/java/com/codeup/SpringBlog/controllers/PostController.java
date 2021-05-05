@@ -1,24 +1,20 @@
 package com.codeup.SpringBlog.controllers;
 
 import com.codeup.SpringBlog.model.Post;
-import com.codeup.SpringBlog.repository.PostRepository;
+import com.codeup.SpringBlog.repository.PostRepo;
 import com.codeup.SpringBlog.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 @Controller
 public class PostController {
 
-    private final PostRepository postDao;
+    private final PostRepo postDao;
     private final PostService postService;
 
-    public PostController(PostRepository postDao, PostService postService) {
+    public PostController(PostRepo postDao, PostService postService) {
         this.postDao = postDao;
         this.postService = postService;
     }

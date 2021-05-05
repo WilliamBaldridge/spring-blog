@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepo extends JpaRepository<Post, Long> {
 
     // Direct queries need to start with findBy/getBy/ReadBy
     // when properties are of primitive data types, just append property name to direct query

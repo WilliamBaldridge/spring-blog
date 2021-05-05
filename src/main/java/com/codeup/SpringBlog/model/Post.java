@@ -1,7 +1,5 @@
 package com.codeup.SpringBlog.model;
 
-import com.codeup.SpringBlog.repository.PostRepository;
-
 import javax.persistence.*;
 
 @Entity

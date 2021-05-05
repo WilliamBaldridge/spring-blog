@@ -2,7 +2,7 @@ package com.codeup.SpringBlog.service;
 
 
 import com.codeup.SpringBlog.model.Post;
-import com.codeup.SpringBlog.repository.PostRepository;
+import com.codeup.SpringBlog.repository.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,37 +12,37 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     @Autowired
-    PostRepository postRepository;
+    PostRepo postRepo;
 
 
     @Override
     public Post addPost(Post post) {
 
-        return postRepository.save(post);
+        return postRepo.save(post);
     }
 
     @Override
     public void updatePost(Post post) {
 
-        postRepository.save(post);
+        postRepo.save(post);
     }
 
     @Override
     public Post getPostById(long postId) {
 
-        return postRepository.findByPostId(postId);
+        return postRepo.findByPostId(postId);
     }
 
     @Override
     public void deletePost(long postId) {
 
-        postRepository.deleteById(postId);
+        postRepo.deleteById(postId);
     }
 
     @Override
     public List<Post> getPostsByTitle(String title) {
 
-        List<Post> postList = postRepository.getPostsByTitle(title);
+        List<Post> postList = postRepo.getPostsByTitle(title);
 
         return postList;
     }
