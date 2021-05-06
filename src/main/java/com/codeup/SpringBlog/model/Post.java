@@ -1,5 +1,7 @@
 package com.codeup.SpringBlog.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +15,17 @@ public class Post {
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
+
+    public Post(String title, String body, User user) {
+        this.title = title;
+        this.body = body;
+        this.user = user;
+    }
 
     public Post(long postId, String title, String body) {
         this.postId = postId;
@@ -52,5 +64,13 @@ public class Post {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

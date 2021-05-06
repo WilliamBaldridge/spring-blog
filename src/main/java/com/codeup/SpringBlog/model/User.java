@@ -1,11 +1,13 @@
 package com.codeup.SpringBlog.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -24,6 +26,10 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @JsonManagedReference
+    private List<Post> posts;
 
 
     public User(String username, String email, String password) {

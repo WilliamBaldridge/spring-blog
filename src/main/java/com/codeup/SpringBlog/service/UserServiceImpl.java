@@ -2,10 +2,12 @@ package com.codeup.SpringBlog.service;
 
 
 import com.codeup.SpringBlog.model.User;
-import com.codeup.SpringBlog.repository.PostRepo;
+import com.codeup.SpringBlog.repository.UserRepo;
 import com.codeup.SpringBlog.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,22 +17,38 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User addPost(User User) {
-        return null;
+    public User addUser(User user) {
+
+        return userRepo.save(user);
     }
 
     @Override
-    public void updatePost(User User) {
+    public void updateUser(User user) {
 
+        userRepo.save(user);
     }
 
     @Override
-    public User getPostById(long UserId) {
-        return null;
+    public User getUserById(long userId) {
+
+        return userRepo.findByUserId(userId);
     }
 
     @Override
-    public void deletePost(long UserId) {
+    public void deleteUser(long userId) {
 
+        userRepo.deleteById(userId);
+    }
+
+    @Override
+    public List<User> getUserByUsername(String username) {
+
+        return userRepo.getUserByUsername(username);
+    }
+
+    @Override
+    public List<User> getUserByEmail(String email) {
+
+        return userRepo.getUserByEmail(email);
     }
 }
