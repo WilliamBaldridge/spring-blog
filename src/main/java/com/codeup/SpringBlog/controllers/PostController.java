@@ -4,6 +4,7 @@ import com.codeup.SpringBlog.model.Post;
 import com.codeup.SpringBlog.model.User;
 import com.codeup.SpringBlog.repository.PostRepo;
 import com.codeup.SpringBlog.repository.UserRepo;
+import com.codeup.SpringBlog.service.EmailService;
 import com.codeup.SpringBlog.service.PostService;
 import com.codeup.SpringBlog.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -18,12 +19,14 @@ public class PostController {
     private final PostService postService;
     private final UserRepo userDao;
     private final UserService userService;
+    private final EmailService emailService;
 
-    public PostController(PostRepo postDao, PostService postService, UserRepo userDao, UserService userService) {
+    public PostController(PostRepo postDao, PostService postService, UserRepo userDao, UserService userService, EmailService emailService) {
         this.postDao = postDao;
         this.postService = postService;
         this.userDao = userDao;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @RequestMapping(path = "/posts", method = RequestMethod.GET)
@@ -35,39 +38,48 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
-    public String postById(@PathVariable int id, Model vModel) {
+    public String postById(@PathVariable long id, Model vModel) {
 
         vModel.addAttribute("post", postService.getPostById(id));
 
         return "posts/show";
     }
 
-    @GetMapping(path = "/posts/create")
-    public String viewCreateForm() {
+//    @GetMapping(path = "/posts/create")
+//    public String viewCreateForm() {
+//
+//        return "posts/create";
+//    }
 
+    @GetMapping(path = "/posts/create")
+    public String viewCreateForm(Model model) {
+
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
+//    @PostMapping(path = "/posts/create")
+//    public String createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, Model vModel) {
+//        // input add service method
+//
+//        Post post = new Post(
+//                title,
+//                body,
+//                userService.getUserById(1)
+//                );
+//
+//        postService.addPost(post);
+//
+//        return "posts/index";
+//    }
+
     @PostMapping(path = "/posts/create")
-    public String createPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, Model vModel) {
-        // input add service method
-
-//        User user = new User(
-//                "test@first.com",
-//                "1234",
-//                "firstuser"
-//        );
-//        userService.addUser(user);
-
-        Post post = new Post(
-                title,
-                body,
-                userService.getUserById(1)
-                );
+    public String createPost(@ModelAttribute Post post) {
 
         postService.addPost(post);
+        emailService.prepareAndSend(post, "test", "post.getBody()");
 
-        return "posts/index";
+        return "redirect:/posts";
     }
 
     @GetMapping(path = "/posts/{id}/edit")
@@ -103,7 +115,7 @@ public class PostController {
 
         postService.updatePost(updatedPost);
 
-        return "posts/index";
+        return "redirect:/posts/{id}}";
     }
 
 //    @GetMapping(path = "/posts/delete")
