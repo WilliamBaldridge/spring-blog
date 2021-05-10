@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="partials/head :: head('Show Post')" />
+    <th:block th:replace="partials/head :: head('Show Post')"/>
 </head>
 <body>
-<nav th:replace="partials/navbar :: navbar" />
+<nav th:replace="partials/navbar :: navbar"/>
 
 <h1>Post by id</h1>
 
 <main>
     <div class="card">
-        <h3 th:text="${post.title}"></h3>
-        <p th:text="${post.user.username}"></p>
-        <p th:text="${post.user.email}"></p>
-        <p th:text="${post.body}"></p>
+        <h3 class="card-header" th:text="${post.title}"></h3>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${post.user.username}"></h5>
+            <p class="card-text" th:text="${post.user.email}"></p>
+            <p class="card-text" th:text="${post.body}"></p>
+        </div>
     </div>
 </main>
 
-<th:block th:replace="partials/scripts :: scripts" />
+<th:block th:replace="partials/scripts :: scripts"/>
 </body>
 </html>
