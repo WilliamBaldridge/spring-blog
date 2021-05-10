@@ -38,6 +38,13 @@ public class User {
         this.password = password;
     }
 
+    public User(User copy) {
+        userId = copy.userId; // This line is SUPER important! Many things won't work if it's absent
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
+
 
     @Override
     public String toString() {
