@@ -47,4 +47,9 @@ public class PostServiceImpl implements PostService {
         return postList;
     }
 
+    @Override
+    public Post findByTitle(String title) {
+        return postRepo.findByTitle(title);
+    }
+
 }

@@ -12,5 +12,6 @@ public interface PostService {
     void deletePost(long postId);
 
     List<Post> getPostsByTitle(String title);
+    Post findByTitle(String title);
 
 }

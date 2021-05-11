@@ -19,6 +19,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 //    Post getPostById(long id);
 
     Post findByPostId(long postId);
+    Post findByTitle(String title);
 
     @Query("FROM Post p WHERE p.title LIKE %:term%")
     List<Post> getPostsByTitle(@Param("term") String term);

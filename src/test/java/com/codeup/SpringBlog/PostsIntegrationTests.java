@@ -5,6 +5,7 @@ import com.codeup.SpringBlog.model.Post;
 import com.codeup.SpringBlog.model.User;
 import com.codeup.SpringBlog.repository.PostRepo;
 import com.codeup.SpringBlog.repository.UserRepo;
+import com.codeup.SpringBlog.service.PostService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +17,15 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBlogApplication.class)
@@ -44,6 +43,9 @@ public class PostsIntegrationTests {
 
     @Autowired
     PostRepo postDao;
+
+    @Autowired
+    PostService postService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -74,7 +76,7 @@ public class PostsIntegrationTests {
     }
 
     @Test
-    public void contextLoads() {
+    public void contextLoposts() {
         // Sanity Test, just to make sure the MVC bean is working
         assertNotNull(mvc);
     }
@@ -85,6 +87,13 @@ public class PostsIntegrationTests {
         assertNotNull(httpSession);
     }
 
+    @Test
+    public void testListOfPosts() throws Exception {
+        List<Post> existingListOfPosts = postDao.findAll();
+
+
+    }
+
 
     @Test
     public void testCreatePost() throws Exception {
@@ -92,8 +101,10 @@ public class PostsIntegrationTests {
         this.mvc.perform(
                 post("/posts/create").with(csrf())
                         .session((MockHttpSession) httpSession)
-                        // Add all the required parameters to your request like this
+                        // Postd all the required parameters to your request like this
                         .param("title", "test")
+//                        .param("username", "testUser")
+//                        .param("email", "testUser@codeup.com")
                         .param("body", "for sale"))
                 .andExpect(status().is3xxRedirection());
     }
@@ -101,7 +112,7 @@ public class PostsIntegrationTests {
     @Test
     public void testShowPost() throws Exception {
 
-        Post existingPost = postDao.findAll().get(1013);
+        Post existingPost = postDao.findAll().get(1009);
 
         // Makes a Get request to /posts/{id} and expect a redirection to the Post show page
         this.mvc.perform(get("/posts/" + existingPost.getPostId()))
@@ -143,6 +154,28 @@ public class PostsIntegrationTests {
                 .andExpect(content().string(containsString("edited title")))
                 .andExpect(content().string(containsString("edited description")));
     }
+
+    @Test
+    public void testDeletePost() throws Exception {
+        // Creates a test Post to be deleted
+        this.mvc.perform(
+                post("/posts/create").with(csrf())
+                        .session((MockHttpSession) httpSession)
+                        .param("title", "ad to be deleted")
+                        .param("description", "won't last long"))
+                .andExpect(status().is3xxRedirection());
+
+        // Get the recent Post that matches the title
+        Post existingPost = postService.findByTitle("ad to be deleted");
+
+        // Makes a Post request to /posts/{id}/delete and expect a redirection to the Posts index
+        this.mvc.perform(
+                post("/posts/" + existingPost.getPostId() + "/delete").with(csrf())
+                        .session((MockHttpSession) httpSession)
+                        .param("id", String.valueOf(existingPost.getPostId())))
+                .andExpect(status().is3xxRedirection());
+    }
+
 
 
 

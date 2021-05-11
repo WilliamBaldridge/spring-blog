@@ -5,8 +5,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.HttpSession;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.config.http.MatcherType.mvc;
 
 @SpringBootTest
 class SpringBlogApplicationTests {
